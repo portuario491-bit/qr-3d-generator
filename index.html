@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Código QR para imprimir en 3D — generador gratis online | QR3D Studio</title>
+<meta name="description" content="Crea tu código QR personalizado gratis y sin registro. Elige colores, forma y logo, y descarga el archivo 3D (3MF a dos colores, listo para imprimir) en formato soporte de mesa, llavero o placa de pared.">
+<link rel="canonical" href="https://qr3d.example/">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Código QR para imprimir en 3D — generador gratis online">
+<meta property="og:description" content="Diseña tu QR y descárgalo como objeto 3D a dos colores (soporte, llavero o placa), listo para tu impresora. Sin registro, 100% en tu navegador.">
+<meta property="og:image" content="assets/img/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=20260824">
+<!-- TODO (propietario del sitio): al activar Google AdSense, añade aquí tu gestor de
+     consentimiento de cookies (CMP) antes de cargar cualquier script de anuncios. -->
+
+<!-- Motor 3D (three.js): resuelve especificadores para el import() dinámico y perezoso -->
+<script type="importmap">
+{ "imports": {
+    "three": "./lib/vendor/three/three.module.min.js",
+    "three/addons/": "./lib/vendor/three/addons/"
+} }
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR3D Studio",
+  "description": "Generador gratuito de códigos QR personalizados con exportación a objeto 3D imprimible (3MF a dos colores, STL, soporte de mesa, llavero y placa de pared).",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any (navegador web)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "url": "https://qr3d.example/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Necesito instalar algo o crear una cuenta?", "acceptedAnswer": { "@type": "Answer", "text": "No. Todo funciona en tu navegador: pegas el enlace, personalizas el QR y descargas. No hay registro, ni instalación, ni límite de usos." } },
+    { "@type": "Question", "name": "¿El QR impreso en 3D funciona igual que uno normal?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. El relieve reproduce exactamente el mismo patrón que el QR en pantalla, con altura suficiente (1–2 mm) para que el móvil lo lea sin problema. La herramienta avisa si el contraste o el tamaño de módulo no son suficientes para escanear bien." } },
+    { "@type": "Question", "name": "¿Qué diferencia hay entre el archivo 3MF y el STL?", "acceptedAnswer": { "@type": "Answer", "text": "El 3MF lleva los dos colores incrustados: al abrirlo en Bambu Studio, PrusaSlicer o Cura, la base y el QR en relieve ya aparecen asignados a dos colores distintos. El STL no lleva color, es la opción de repuesto para software antiguo." } },
+    { "@type": "Question", "name": "¿Puedo imprimirlo con una sola boquilla?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, si tu slicer soporta cambios de filamento manuales o AMS/MMU. Con una impresora de un solo color puedes imprimir cada pieza del 3MF por separado." } },
+    { "@type": "Question", "name": "¿Qué tamaño de impresión recomendáis?", "acceptedAnswer": { "@type": "Answer", "text": "Recomendamos que cada módulo del QR mida al menos 1,5 mm. La herramienta calcula este valor en vivo y avisa en rojo si se queda corto." } },
+    { "@type": "Question", "name": "¿Mis datos o el enlace se suben a algún servidor?", "acceptedAnswer": { "@type": "Answer", "text": "No. Todo el proceso ocurre en tu propio dispositivo. No enviamos nada a ningún servidor." } }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#tool">Ir a la herramienta</a>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">▦</span>
+      <span class="brand-name">QR3D Studio</span>
+    </a>
+    <nav class="header-nav" aria-label="Secciones de la página">
+      <a href="#tool">Herramienta</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#ideas">Ideas de uso</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero container">
+    <h1>Código QR para imprimir en 3D</h1>
+    <p class="hero-sub">Genera tu QR personalizado gratis y sin registro, y descárgalo como objeto 3D a dos colores —soporte de mesa, llavero o placa de pared— listo para tu impresora.</p>
+  </section>
+
+  <!-- ============================= LA HERRAMIENTA ============================= -->
+  <section class="tool-section container" id="tool">
+    <div class="tool-card" data-state="idle">
+
+      <!-- Paso 1: contenido -->
+      <div class="tool-block">
+        <h2 class="visually-hidden">Generador de código QR</h2>
+        <div class="content-tabs" role="tablist" aria-label="Tipo de contenido del QR">
+          <button type="button" class="content-tab is-active" role="tab" aria-selected="true" data-content-mode="link">🔗 Enlace</button>
+          <button type="button" class="content-tab" role="tab" aria-selected="false" data-content-mode="wifi">📶 WiFi</button>
+        </div>
+
+        <div class="content-panel" data-content-panel="link">
+          <label class="field-label" for="linkInput">Pega tu enlace</label>
+          <input type="text" id="linkInput" class="text-input" placeholder="carta.mirestaurante.com, g.page/tu-negocio, instagram.com/tu_cuenta…" autocomplete="off" spellcheck="false">
+          <p class="field-hint">Funciona con o sin «https://» — lo añadimos automáticamente.</p>
+        </div>
+
+        <div class="content-panel is-hidden" data-content-panel="wifi">
+          <div class="field-grid">
+            <div>
+              <label class="field-label" for="wifiSsid">Nombre de la red (SSID)</label>
+              <input type="text" id="wifiSsid" class="text-input" placeholder="MiCafeteria_WiFi" autocomplete="off">
+            </div>
+            <div>
+              <label class="field-label" for="wifiPass">Contraseña</label>
+              <input type="text" id="wifiPass" class="text-input" placeholder="••••••••" autocomplete="off">
+            </div>
+            <div>
+              <label class="field-label" for="wifiSec">Seguridad</label>
+              <select id="wifiSec" class="text-input">
+                <option value="WPA" selected>WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Red abierta (sin contraseña)</option>
+              </select>
+            </div>
+            <div class="field-checkbox">
+              <label><input type="checkbox" id="wifiHidden"> Red oculta</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2: diseño + vista previa -->
+      <div class="tool-block tool-grid">
+        <div class="tool-controls">
+          <div class="control-group">
+            <span class="field-label">Estilo</span>
+            <div class="style-grid" id="styleGrid" data-style-grid></div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Colores</span>
+            <div class="color-row">
+              <label class="color-field">
+                <span>Puntos</span>
+                <input type="color" id="fgColor" value="#1b1b22">
+              </label>
+              <label class="color-field">
+                <span>Fondo</span>
+                <input type="color" id="bgColor" value="#ffffff">
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Logo o emoji en el centro</span>
+            <div class="emoji-grid" id="emojiGrid" data-emoji-grid></div>
+            <div class="center-row">
+              <label class="btn btn-ghost btn-small" for="logoUpload">Subir logo
+                <input type="file" id="logoUpload" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="visually-hidden">
+              </label>
+              <button type="button" class="btn btn-ghost btn-small" id="removeCenter">Quitar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-preview">
+          <div class="qr-preview-frame">
+            <div id="qrPreview" aria-live="polite"></div>
+          </div>
+          <div class="download-row">
+            <button type="button" class="btn btn-primary" id="downloadPng">Descargar PNG</button>
+            <button type="button" class="btn btn-secondary" id="downloadSvg">Descargar SVG</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="privacy-badge">🔒 100&nbsp;% privado — tu enlace y tu diseño se procesan en tu dispositivo, nunca se suben a ningún servidor.</p>
+    </div>
+
+    <!-- ============================= PANEL 3D ============================= -->
+    <div class="tool-card object3d-card" data-state="idle">
+      <h2>Exporta tu QR como objeto 3D</h2>
+      <p class="section-sub">El mismo diseño, en relieve, listo para imprimir con dos colores ya asignados por pieza.</p>
+
+      <div class="tool-block">
+        <span class="field-label">Formato</span>
+        <div class="format-grid" id="formatGrid">
+          <button type="button" class="format-btn is-active" data-format="soporte">
+            <span class="format-icon" aria-hidden="true">📐</span>
+            <span>Soporte de mesa</span>
+            <small>Carta / "déjanos una reseña"</small>
+          </button>
+          <button type="button" class="format-btn" data-format="llavero">
+            <span class="format-icon" aria-hidden="true">🔑</span>
+            <span>Llavero</span>
+            <small>Con agujero para anilla</small>
+          </button>
+          <button type="button" class="format-btn" data-format="placa">
+            <span class="format-icon" aria-hidden="true">🖼️</span>
+            <span>Placa de pared</span>
+            <small>Con dos puntos de anclaje</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="tool-block tool-grid">
+        <div class="tool-controls">
+          <div class="control-group">
+            <label class="field-label" for="obj3dText">Texto (nombre del negocio, opcional)</label>
+            <input type="text" id="obj3dText" class="text-input" placeholder="Café Nómada" maxlength="24">
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Colores de impresión</span>
+            <div class="color-row">
+              <label class="color-field">
+                <span>Base</span>
+                <input type="color" id="obj3dColorBase" value="#f2f1ec">
+              </label>
+              <label class="color-field">
+                <span>QR / texto</span>
+                <input type="color" id="obj3dColorCode" value="#1b1b22">
+              </label>
+            </div>
+            <div class="preset-row" id="presetColorRow" data-preset-colors></div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Tamaño de la pieza</span>
+            <input type="range" id="obj3dSize" min="50" max="140" value="90" step="1">
+            <div class="range-value"><span id="obj3dSizeValue">90</span>&nbsp;mm</div>
+          </div>
+
+          <div class="print-warnings" id="printWarnings" aria-live="polite"></div>
+        </div>
+
+        <div class="tool-preview">
+          <div class="viewer3d-frame" id="viewer3dFrame" data-viewer3d>
+            <div class="viewer3d-placeholder" id="viewer3dPlaceholder">Preparando la vista previa 3D…</div>
+            <canvas id="viewer3dCanvas"></canvas>
+          </div>
+          <p class="viewer-hint">Arrastra para girar la pieza · así se verá impresa</p>
+          <div class="download-row">
+            <button type="button" class="btn btn-primary" id="download3mf">Descargar 3MF (2 colores)</button>
+            <button type="button" class="btn btn-secondary" id="downloadStl">Descargar STL (sin color)</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="field-hint">El archivo 3MF asigna automáticamente cada pieza a su color al abrirlo en Bambu Studio, PrusaSlicer u Orca. El STL es la opción sin color, para impresoras o programas antiguos.</p>
+      <p class="privacy-badge">🔒 Los archivos 3D se generan en tu navegador — nada se sube a ningún servidor.</p>
+    </div>
+  </section>
+
+  <!-- ANUNCIO: banner horizontal bajo la herramienta -->
+  <div class="ad-slot ad-slot-leaderboard container" data-ad-slot>
+    <span class="ad-label">ANUNCIO</span>
+    <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+  </div>
+
+  <!-- ============================= CÓMO FUNCIONA ============================= -->
+  <section class="how-section container" id="como-funciona">
+    <h2>Cómo funciona: crea tu QR 3D en 3 pasos</h2>
+    <ol class="how-steps">
+      <li>
+        <span class="step-num">1</span>
+        <h3>Pega tu enlace</h3>
+        <p>Carta digital, reseñas de Google, Instagram, wifi de tu local o tu propia web. Pégalo y el QR se genera al instante, sin registrarte.</p>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <h3>Personalízalo</h3>
+        <p>Elige colores, la forma de los puntos y añade tu logo o un emoji en el centro. Lo ves cambiar en tiempo real.</p>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <h3>Descarga o imprime en 3D</h3>
+        <p>Baja el PNG/SVG para pantalla, o el objeto 3D —soporte, llavero o placa— listo para tu impresora, con los colores ya asignados.</p>
+      </li>
+    </ol>
+
+    <div class="seo-copy">
+      <h2>Un generador de códigos QR pensado para imprimirse, no solo para mostrarse en pantalla</h2>
+      <p>La mayoría de generadores de QR online solo sirven una imagen PNG. QR3D Studio va un paso más allá: convierte tu código QR en un <strong>objeto 3D real</strong>, con el patrón en relieve y los colores ya separados por pieza, para que lo imprimas y lo coloques donde lo necesites —una mesa de restaurante, la entrada de tu alojamiento o un llavero de recuerdo.</p>
+      <p>El archivo principal de descarga es un <strong>3MF a dos colores</strong>: uno para la base y otro para el código QR en relieve (y el texto, si añades uno). Los slicers modernos como Bambu Studio, PrusaSlicer, Orca Slicer o Cura leen ese archivo y asignan automáticamente cada pieza a su color, sin tener que pintar ni configurar nada manualmente. Si tu impresora o tu software es más antiguo, también puedes descargar el modelo en <strong>STL</strong>, sin color, listo para pintarlo o imprimirlo en un solo filamento.</p>
+      <p>Para que el resultado sea realmente <strong>escaneable</strong> una vez impreso, la herramienta calcula en vivo el tamaño de cada módulo y el contraste entre tus dos colores, y te avisa si hace falta agrandar la pieza o acortar el enlace antes de imprimir.</p>
+    </div>
+  </section>
+
+  <!-- ANUNCIO: banner a mitad de contenido -->
+  <div class="ad-slot ad-slot-incontent container" data-ad-slot>
+    <span class="ad-label">ANUNCIO</span>
+    <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+  </div>
+
+  <!-- ============================= IDEAS DE USO ============================= -->
+  <section class="ideas-section container" id="ideas">
+    <h2>Ideas para usar tu QR impreso en 3D</h2>
+    <div class="ideas-grid">
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🍽️</span><h3>Cartas de restaurante</h3><p>Un soporte de mesa con tu QR: el cliente escanea y ve la carta digital al instante, sin tocar papel.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">⭐</span><h3>Reseñas de Google</h3><p>Coloca el soporte en la caja o la mesa con el enlace directo a «dejar una reseña» — más opiniones, menos fricción.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🔑</span><h3>Llaveros para eventos</h3><p>Bodas, ferias o congresos: un llavero QR con el programa, la ubicación o el álbum de fotos como recuerdo útil.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">📶</span><h3>WiFi para alojamientos</h3><p>Una placa de pared en la entrada de tu alojamiento turístico o Airbnb con la contraseña del wifi, sin dictarla nunca más.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">📸</span><h3>Instagram y redes</h3><p>Un QR a tu perfil en la mesa, el escaparate o la tarjeta de visita para ganar seguidores locales.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🏪</span><h3>Comercios y tiendas</h3><p>Enlaza al catálogo online, promociones o el formulario de contacto desde el propio mostrador.</p></article>
+    </div>
+  </section>
+
+  <!-- ============================= FAQ ============================= -->
+  <section class="faq-section container" id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>¿Necesito instalar algo o crear una cuenta?</summary>
+        <p>No. Todo funciona en tu navegador: pegas el enlace, personalizas el QR y descargas. No hay registro, ni instalación, ni límite de usos.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿El QR impreso en 3D funciona igual que uno normal?</summary>
+        <p>Sí. El relieve reproduce exactamente el mismo patrón que el QR en pantalla, con altura suficiente (1–2&nbsp;mm) para que el móvil lo lea sin problema. La herramienta te avisa si el contraste o el tamaño de módulo no son suficientes para escanear bien.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué diferencia hay entre el archivo 3MF y el STL?</summary>
+        <p>El 3MF lleva los dos colores incrustados: al abrirlo en Bambu Studio, PrusaSlicer o Cura, la base y el QR en relieve ya aparecen asignados a dos colores distintos, sin que tengas que tocar nada. El STL no lleva color — es la opción de repuesto para impresoras o programas más antiguos que no admiten 3MF con color.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo imprimirlo con una sola boquilla (single-nozzle)?</summary>
+        <p>Sí, si tu slicer soporta cambios de filamento manuales o AMS/MMU. Con una impresora de un solo color puedes imprimir cada pieza del 3MF por separado, o imprimir solo en el color de la base y pintar el relieve a mano.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué tamaño de impresión recomendáis?</summary>
+        <p>Cuanto más grande, mejor escanea: recomendamos que cada módulo del QR mida al menos 1,5&nbsp;mm. La herramienta calcula este valor en vivo según el tamaño que elijas y te avisa en rojo si se queda corto.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo usar un enlace acortado o con parámetros largos?</summary>
+        <p>Sí, pero cuanto más corto sea el enlace, menos módulos tendrá el QR y más grande y legible saldrá impreso. Para el objeto 3D es especialmente recomendable acortar el enlace primero.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Mis datos o el enlace se suben a algún servidor?</summary>
+        <p>No. Todo el proceso —generación del QR, diseño y creación de los archivos 3D— ocurre en tu propio dispositivo. No enviamos nada a ningún servidor.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Los tres formatos (soporte, llavero, placa) sirven para cualquier impresora?</summary>
+        <p>Sí, son modelos estándar en FDM que no necesitan soportes de impresión. El soporte de mesa lleva un ángulo pensado para imprimirse sin soportes, el llavero incluye el agujero para la anilla y la placa de pared trae dos puntos de anclaje.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<!-- ANUNCIO: notificación de esquina -->
+<aside class="corner-toast" id="cornerAd" hidden>
+  <span class="ad-label">ANUNCIO</span>
+  <button type="button" class="corner-toast-close" id="cornerAdClose" aria-label="Cerrar anuncio">✕</button>
+</aside>
+
+<!-- ANUNCIO: pop-up al descargar -->
+<dialog id="adDialog" class="ad-dialog">
+  <div class="ad-dialog-body">
+    <button type="button" class="ad-dialog-close" id="adDialogClose" aria-label="Cerrar">✕</button>
+    <span class="ad-label">ANUNCIO</span>
+    <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+    <button type="button" class="btn btn-secondary btn-small ad-dialog-btn" id="adDialogCloseBtn">Cerrar y seguir</button>
+  </div>
+</dialog>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <p>© 2026 QR3D Studio — Generador de códigos QR para imprimir en 3D.</p>
+    <nav aria-label="Legal">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="aviso-legal.html">Aviso legal</a>
+    </nav>
+  </div>
+  <p class="container credits-line">Motor QR: qr-code-styling (MIT). Motor 3D: three.js (MIT). Empaquetado 3MF/STL: JSZip (MIT).</p>
+</footer>
+
+<!-- Motores (defer mantiene el orden) -->
+<script defer src="lib/vendor/qr-code-styling.js?v=20260824"></script>
+<script defer src="lib/vendor/jszip.min.js?v=20260824"></script>
+<script defer src="lib/manifest.js?v=20260824"></script>
+<script defer src="main.js?v=20260824"></script>
+<script defer src="qr3d.js?v=20260824"></script>
+</body>
+</html>
