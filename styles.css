@@ -202,6 +202,16 @@ h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.12;
 .btn:active { transform: scale(.97); }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 
+.promo-banner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem;
+  background: var(--accent-soft); border-radius: var(--radius-l); padding: 1.4rem 1.6rem; margin-block: 2rem;
+}
+.promo-banner-text { flex: 1; min-width: 240px; }
+.promo-banner-kicker { font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); }
+.promo-banner-text h2 { font-size: 1.15rem; margin-top: .3rem; }
+.promo-banner-text p { color: var(--text-muted); font-size: .9rem; margin-top: .3rem; }
+.promo-banner .btn { flex-shrink: 0; }
+
 .privacy-badge { margin-top: 1.2rem; font-size: .82rem; color: var(--text-muted); }
 
 /* =============================================================
