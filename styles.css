@@ -324,7 +324,21 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .faq-item p { color: var(--text-muted); margin-top: .7rem; font-size: .92rem; }
 
 /* =============================================================
-   10. Responsive breakpoints (reference)
+   10. Landing / tutorial pages
+   ============================================================= */
+.breadcrumb { font-size: .82rem; color: var(--text-muted); margin-bottom: .9rem; }
+.breadcrumb a { color: var(--accent); }
+.breadcrumb a:hover { text-decoration: underline; }
+.page-hero { text-align: center; padding-block: 2.2rem 1.6rem; }
+.page-hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); max-width: 30ch; margin-inline: auto; }
+.page-hero .hero-sub { margin-top: .7rem; }
+.page-hero .btn { margin-top: 1.3rem; }
+.seo-copy ul, .seo-copy ol { color: var(--text-muted); font-size: .96rem; margin: 0 0 .9rem 1.2rem; }
+.seo-copy li { margin-bottom: .3rem; }
+.seo-copy .btn { margin-top: .4rem; }
+
+/* =============================================================
+   11. Responsive breakpoints (reference)
    ============================================================= */
 @media (min-width: 1280px) {
   .container { padding-inline: 1.5rem; }
