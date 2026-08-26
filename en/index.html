@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D Printable QR Code Generator — Free Online Tool | QR3D Studio</title>
+<meta name="description" content="Create your custom QR code for free, no signup. Pick colors, shape and a logo, then download it as a 3D file (two-color 3MF, ready to print) in stand, keychain or wall-plaque form.">
+<link rel="canonical" href="https://qr3d.utilix.uno/en/">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="es" href="https://qr3d.utilix.uno/">
+<link rel="alternate" hreflang="en" href="https://qr3d.utilix.uno/en/">
+<link rel="alternate" hreflang="x-default" href="https://qr3d.utilix.uno/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="3D Printable QR Code Generator — Free Online Tool">
+<meta property="og:description" content="Design your QR code and download it as a two-color 3D object (stand, keychain or plaque), ready for your printer. No signup, 100% in your browser.">
+<meta property="og:image" content="../assets/img/og-image.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css?v=20260825">
+<!-- TODO (site owner): when you activate Google AdSense, add your cookie consent
+     manager (CMP) here before loading any ad script. -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2829981614170975" crossorigin="anonymous"></script>
+
+<!-- 3D engine (three.js): resolves specifiers for the dynamic, lazy import() -->
+<script type="importmap">
+{ "imports": {
+    "three": "../lib/vendor/three/three.module.min.js",
+    "three/addons/": "../lib/vendor/three/addons/"
+} }
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR3D Studio",
+  "description": "Free custom QR code generator with 3D-printable object export (two-color 3MF, STL, table stand, keychain and wall plaque).",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any (web browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://qr3d.utilix.uno/en/",
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Do I need to install anything or create an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Everything runs in your browser: paste your link, customize the QR code and download. No signup, no install, no usage limit." } },
+    { "@type": "Question", "name": "Does a 3D-printed QR code scan the same as a normal one?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The raised relief reproduces the exact same pattern as the on-screen QR code, with enough height (1–2 mm) for phones to read it without issue. The tool warns you if the contrast or module size aren't enough to scan reliably." } },
+    { "@type": "Question", "name": "What's the difference between the 3MF and STL files?", "acceptedAnswer": { "@type": "Answer", "text": "The 3MF file has both colors embedded: opening it in Bambu Studio, PrusaSlicer or Cura already assigns the base and the raised QR code to two separate colors. STL carries no color — it's the fallback for older software." } },
+    { "@type": "Question", "name": "Can I print it with a single nozzle?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, if your slicer supports manual filament changes or AMS/MMU. With a single-color printer you can print each piece of the 3MF separately." } },
+    { "@type": "Question", "name": "What print size do you recommend?", "acceptedAnswer": { "@type": "Answer", "text": "We recommend each QR module be at least 1.5 mm. The tool calculates this live and warns you in red if it's too small." } },
+    { "@type": "Question", "name": "Is my data or link uploaded to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No. The entire process happens on your own device. We never send anything to a server." } }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#tool">Skip to the tool</a>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">▦</span>
+      <span class="brand-name">QR3D Studio</span>
+    </a>
+    <nav class="header-nav" aria-label="Page sections">
+      <a href="#tool">Tool</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#ideas">Use ideas</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero container">
+    <h1>3D Printable QR Code Generator</h1>
+    <p class="hero-sub">Design your custom QR code for free — no signup — and download it as a two-color 3D object: table stand, keychain, or wall plaque, ready for your printer. Prefer a flat image? PNG and SVG downloads are one click away too.</p>
+  </section>
+
+  <!-- ============================= THE TOOL ============================= -->
+  <section class="tool-section container" id="tool">
+    <div class="tool-card" data-state="idle">
+
+      <!-- Step 1: content -->
+      <div class="tool-block">
+        <h2 class="visually-hidden">QR code generator</h2>
+        <div class="content-tabs" role="tablist" aria-label="QR code content type">
+          <button type="button" class="content-tab is-active" role="tab" aria-selected="true" data-content-mode="link">🔗 Link</button>
+          <button type="button" class="content-tab" role="tab" aria-selected="false" data-content-mode="wifi">📶 WiFi</button>
+        </div>
+
+        <div class="content-panel" data-content-panel="link">
+          <label class="field-label" for="linkInput">Paste your link</label>
+          <input type="text" id="linkInput" class="text-input" placeholder="menu.myrestaurant.com, g.page/your-business, instagram.com/your_account…" autocomplete="off" spellcheck="false">
+          <p class="field-hint">Works with or without “https://” — we add it automatically.</p>
+        </div>
+
+        <div class="content-panel is-hidden" data-content-panel="wifi">
+          <div class="field-grid">
+            <div>
+              <label class="field-label" for="wifiSsid">Network name (SSID)</label>
+              <input type="text" id="wifiSsid" class="text-input" placeholder="MyCafe_WiFi" autocomplete="off">
+            </div>
+            <div>
+              <label class="field-label" for="wifiPass">Password</label>
+              <input type="text" id="wifiPass" class="text-input" placeholder="••••••••" autocomplete="off">
+            </div>
+            <div>
+              <label class="field-label" for="wifiSec">Security</label>
+              <select id="wifiSec" class="text-input">
+                <option value="WPA" selected>WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Open network (no password)</option>
+              </select>
+            </div>
+            <div class="field-checkbox">
+              <label><input type="checkbox" id="wifiHidden"> Hidden network</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: design + live preview -->
+      <div class="tool-block tool-grid">
+        <div class="tool-controls">
+          <div class="control-group">
+            <span class="field-label">Style</span>
+            <div class="style-grid" id="styleGrid" data-style-grid></div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Colors</span>
+            <div class="color-row">
+              <label class="color-field">
+                <span>Dots</span>
+                <input type="color" id="fgColor" value="#1b1b22">
+              </label>
+              <label class="color-field">
+                <span>Background</span>
+                <input type="color" id="bgColor" value="#ffffff">
+              </label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Logo or emoji in the center</span>
+            <div class="emoji-grid" id="emojiGrid" data-emoji-grid></div>
+            <div class="center-row">
+              <label class="btn btn-ghost btn-small" for="logoUpload">Upload logo
+                <input type="file" id="logoUpload" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="visually-hidden">
+              </label>
+              <button type="button" class="btn btn-ghost btn-small" id="removeCenter">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-preview">
+          <div class="qr-preview-frame">
+            <div id="qrPreview" aria-live="polite"></div>
+          </div>
+          <div class="download-row">
+            <button type="button" class="btn btn-primary" id="downloadPng">Download PNG</button>
+            <button type="button" class="btn btn-secondary" id="downloadSvg">Download SVG</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="privacy-badge">🔒 100% private — your link and design are processed on your device, never uploaded to any server.</p>
+    </div>
+
+    <!-- ============================= 3D PANEL ============================= -->
+    <div class="tool-card object3d-card" data-state="idle">
+      <h2>Export your QR code as a 3D object</h2>
+      <p class="section-sub">The same design, embossed, ready to print with two colors already assigned per piece.</p>
+
+      <div class="tool-block">
+        <span class="field-label">Format</span>
+        <div class="format-grid" id="formatGrid">
+          <button type="button" class="format-btn is-active" data-format="soporte">
+            <span class="format-icon" aria-hidden="true">📐</span>
+            <span>Table stand</span>
+            <small>Menu / "leave us a review"</small>
+          </button>
+          <button type="button" class="format-btn" data-format="llavero">
+            <span class="format-icon" aria-hidden="true">🔑</span>
+            <span>Keychain</span>
+            <small>With a keyring hole</small>
+          </button>
+          <button type="button" class="format-btn" data-format="placa">
+            <span class="format-icon" aria-hidden="true">🖼️</span>
+            <span>Wall plaque</span>
+            <small>With two mounting holes</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="tool-block tool-grid">
+        <div class="tool-controls">
+          <div class="control-group">
+            <label class="field-label" for="obj3dText">Text (business name, optional)</label>
+            <input type="text" id="obj3dText" class="text-input" placeholder="Nomad Café" maxlength="24">
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Print colors</span>
+            <div class="color-row">
+              <label class="color-field">
+                <span>Base</span>
+                <input type="color" id="obj3dColorBase" value="#f2f1ec">
+              </label>
+              <label class="color-field">
+                <span>QR / text</span>
+                <input type="color" id="obj3dColorCode" value="#1b1b22">
+              </label>
+            </div>
+            <div class="preset-row" id="presetColorRow" data-preset-colors></div>
+          </div>
+
+          <div class="control-group">
+            <span class="field-label">Piece size</span>
+            <input type="range" id="obj3dSize" min="50" max="140" value="90" step="1">
+            <div class="range-value"><span id="obj3dSizeValue">90</span>&nbsp;mm</div>
+          </div>
+
+          <div class="print-warnings" id="printWarnings" aria-live="polite"></div>
+        </div>
+
+        <div class="tool-preview">
+          <div class="viewer3d-frame" id="viewer3dFrame" data-viewer3d>
+            <div class="viewer3d-placeholder" id="viewer3dPlaceholder">Preparing the 3D preview…</div>
+            <canvas id="viewer3dCanvas"></canvas>
+          </div>
+          <p class="viewer-hint">Drag to rotate the piece · this is how it'll look printed</p>
+          <div class="download-row">
+            <button type="button" class="btn btn-primary" id="download3mf">Download 3MF (2 colors)</button>
+            <button type="button" class="btn btn-secondary" id="downloadStl">Download STL (color-free)</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="field-hint">The 3MF file automatically assigns each piece to its color when you open it in Bambu Studio, PrusaSlicer or Orca. STL is the color-free fallback, for older printers or software.</p>
+      <p class="privacy-badge">🔒 The 3D files are generated in your browser — nothing is uploaded to any server.</p>
+    </div>
+  </section>
+
+  <!-- AD: horizontal banner below the tool -->
+  <div class="ad-slot ad-slot-leaderboard container" data-ad-slot>
+    <span class="ad-label">ADVERTISEMENT</span>
+    <!-- PASTE YOUR ADSENSE CODE HERE -->
+  </div>
+
+  <!-- ============================= HOW IT WORKS ============================= -->
+  <section class="how-section container" id="how-it-works">
+    <h2>How it works: create your 3D QR code in 3 steps</h2>
+    <ol class="how-steps">
+      <li>
+        <span class="step-num">1</span>
+        <h3>Paste your link</h3>
+        <p>Digital menu, Google review link, Instagram, your shop's WiFi, or your own website. Paste it and the QR code renders instantly — no signup.</p>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <h3>Customize it</h3>
+        <p>Pick colors, the dot style, and add your logo or an emoji in the center. You'll see it update in real time.</p>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <h3>Download or 3D print it</h3>
+        <p>Grab the PNG/SVG for on-screen use, or the 3D object — stand, keychain or plaque — ready for your printer, with the colors already assigned.</p>
+      </li>
+    </ol>
+
+    <div class="seo-copy">
+      <h2>A QR code generator built to be printed, not just displayed on a screen</h2>
+      <p>Most online QR code generators only give you a PNG image. QR3D Studio goes further: it turns your QR code into a <strong>real 3D object</strong>, with the pattern embossed and the colors already split by piece, so you can print it and place it wherever you need it — a restaurant table, the entrance of your rental property, or a keepsake keychain.</p>
+      <p>The main download is a <strong>two-color 3MF</strong> file: one color for the base, another for the raised QR code (and the text, if you add one). Modern slicers like Bambu Studio, PrusaSlicer, Orca Slicer or Cura read that file and assign each piece to its color automatically, with nothing to paint or configure by hand. If your printer or software is older, you can also download the model as <strong>STL</strong>, color-free, ready to paint or print in a single filament.</p>
+      <p>To make sure the result is actually <strong>scannable</strong> once printed, the tool calculates the size of each module and the contrast between your two colors live, and warns you if you need to enlarge the piece or shorten the link before printing.</p>
+    </div>
+  </section>
+
+  <!-- AD: banner mid-content -->
+  <div class="ad-slot ad-slot-incontent container" data-ad-slot>
+    <span class="ad-label">ADVERTISEMENT</span>
+    <!-- PASTE YOUR ADSENSE CODE HERE -->
+  </div>
+
+  <!-- ============================= USE IDEAS ============================= -->
+  <section class="ideas-section container" id="ideas">
+    <h2>Ideas for your 3D-printed QR code</h2>
+    <div class="ideas-grid">
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🍽️</span><h3>Restaurant menus</h3><p>A table stand with your QR code: guests scan it and see the digital menu instantly, no paper involved.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">⭐</span><h3>Google reviews</h3><p>Place the stand at the counter or on the table linking straight to "leave a review" — more reviews, less friction.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🔑</span><h3>Event keychains</h3><p>Weddings, fairs or conferences: a QR keychain linking to the schedule, the venue map, or the photo album, as a useful keepsake.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">📶</span><h3>WiFi for rentals</h3><p>A wall plaque at the entrance of your Airbnb or guesthouse with the WiFi password — never dictate it out loud again.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">📸</span><h3>Instagram and social</h3><p>A QR code to your profile on the table, storefront or business card to grow local followers.</p></article>
+      <article class="idea-card"><span class="idea-emoji" aria-hidden="true">🏪</span><h3>Shops and retail</h3><p>Link to your online catalog, promotions, or contact form right from the counter.</p></article>
+    </div>
+  </section>
+
+  <!-- ============================= FAQ ============================= -->
+  <section class="faq-section container" id="faq">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Do I need to install anything or create an account?</summary>
+        <p>No. Everything runs in your browser: paste your link, customize the QR code and download. No signup, no install, no usage limit.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does a 3D-printed QR code scan the same as a normal one?</summary>
+        <p>Yes. The raised relief reproduces the exact same pattern as the on-screen QR code, with enough height (1–2&nbsp;mm) for phones to read it without issue. The tool warns you if the contrast or module size aren't enough to scan reliably.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What's the difference between the 3MF and STL files?</summary>
+        <p>The 3MF file has both colors embedded: opening it in Bambu Studio, PrusaSlicer or Cura already assigns the base and the raised QR code to two separate colors, nothing to configure. STL carries no color — it's the fallback for older printers or software that don't support colored 3MF.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I print it with a single nozzle?</summary>
+        <p>Yes, if your slicer supports manual filament changes or AMS/MMU. With a single-color printer you can print each piece of the 3MF separately, or print only the base color and hand-paint the raised part.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What print size do you recommend?</summary>
+        <p>Bigger scans better: we recommend each QR module be at least 1.5&nbsp;mm. The tool calculates this live based on the size you choose and warns you in red if it's too small.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use a shortened link or one with long parameters?</summary>
+        <p>Yes, but the shorter the link, the fewer modules the QR code needs, and the larger and more legible it prints. For the 3D object, shortening the link first is especially recommended.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data or link uploaded to a server?</summary>
+        <p>No. The entire process — QR generation, design and 3D file creation — happens on your own device. We never send anything to a server.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do all three formats (stand, keychain, plaque) work on any printer?</summary>
+        <p>Yes, they're standard FDM models that don't need print supports. The table stand has an angle designed to print support-free, the keychain includes the ring hole, and the wall plaque has two mounting holes.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<!-- AD: corner notification -->
+<aside class="corner-toast" id="cornerAd" hidden>
+  <span class="ad-label">ADVERTISEMENT</span>
+  <button type="button" class="corner-toast-close" id="cornerAdClose" aria-label="Close ad">✕</button>
+</aside>
+
+<!-- AD: pop-up on download -->
+<dialog id="adDialog" class="ad-dialog">
+  <div class="ad-dialog-body">
+    <button type="button" class="ad-dialog-close" id="adDialogClose" aria-label="Close">✕</button>
+    <span class="ad-label">ADVERTISEMENT</span>
+    <!-- PASTE YOUR ADSENSE CODE HERE -->
+    <button type="button" class="btn btn-secondary btn-small ad-dialog-btn" id="adDialogCloseBtn">Close and continue</button>
+  </div>
+</dialog>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <p>© 2026 QR3D Studio — 3D printable QR code generator.</p>
+    <nav aria-label="Legal">
+      <a href="privacy-policy.html">Privacy</a>
+      <a href="legal-notice.html">Legal notice</a>
+    </nav>
+  </div>
+  <p class="container credits-line">QR engine: qr-code-styling (MIT). 3D engine: three.js (MIT). 3MF/STL packaging: JSZip (MIT).</p>
+</footer>
+
+<!-- Language dictionary for main.js / qr3d.js (must load before them) -->
+<script>
+window.__I18N__ = {
+  lang: "en",
+  emojiAriaLabel: "Use {emoji} as center",
+  slugWifiFallback: "network",
+  slugCodeFallback: "qr-code",
+  warnModuleBad: "{mm} mm module — enlarge the piece or shorten the link (1.5 mm minimum recommended).",
+  warnModuleOk: "{mm} mm module — good size to scan.",
+  warnContrastBad: "Low contrast between colors ({ratio}:1) — may not scan. Use a light base and a dark code.",
+  warnContrastOk: "{ratio}:1 contrast — good contrast to scan.",
+  warnInverted: "Code lighter than the base — most phones read it fine, some older ones won't.",
+  btn3mfIdle: "Download 3MF (2 colors)",
+  btnStlIdle: "Download STL (color-free)",
+  btnGenerating: "Generating…",
+  err3mf: "Couldn't generate the 3D file. Please try again.",
+  errStl: "Couldn't generate the STL. Please try again.",
+  xmlLang: "en-US",
+  materialBase: "Base",
+  materialCode: "Code",
+  stlReadmeName: "README.txt",
+  stlBaseFilename: "base.stl",
+  stlReliefFilename: "qr-relief.stl",
+  stlReadmeContent:
+    "Import both files ({base} and {relief}) into your slicer, place them at the same origin (0,0)\n" +
+    "and assign a different filament/color to each.\n\n" +
+    "If your slicer supports per-piece color, we recommend using the .3mf file instead:\n" +
+    "it already has both colors assigned automatically.",
+  filenameFormat: { soporte: "stand", llavero: "keychain", placa: "plaque" }
+};
+</script>
+
+<!-- Engines (defer keeps load order) -->
+<script defer src="../lib/vendor/qr-code-styling.js?v=20260824"></script>
+<script defer src="../lib/vendor/jszip.min.js?v=20260824"></script>
+<script defer src="../lib/manifest.js?v=20260824"></script>
+<script defer src="../main.js?v=20260826"></script>
+<script defer src="../qr3d.js?v=20260826"></script>
+</body>
+</html>

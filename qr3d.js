@@ -21,8 +21,10 @@
     materialBase: "Base",
     materialCode: "Codigo",
     stlReadmeName: "LEEME.txt",
+    stlBaseFilename: "base.stl",
+    stlReliefFilename: "qr-relieve.stl",
     stlReadmeContent:
-      "Importa ambos archivos (base.stl y qr-relieve.stl) en tu slicer, colócalos en el mismo origen (0,0)\n" +
+      "Importa ambos archivos ({base} y {relief}) en tu slicer, colócalos en el mismo origen (0,0)\n" +
       "y asigna un filamento/color distinto a cada uno.\n\n" +
       "Si tu slicer admite color por pieza, te recomendamos usar el archivo .3mf en su lugar:\n" +
       "ya trae los dos colores asignados automáticamente.",
@@ -530,9 +532,10 @@
       var baseStl = toU8(exporter.parse(baseMesh, { binary: true }));
       var reliefStl = toU8(exporter.parse(reliefMesh, { binary: true }));
       var zip = new window.JSZip();
-      zip.file("base.stl", baseStl);
-      zip.file("qr-relieve.stl", reliefStl);
-      zip.file(t("stlReadmeName"), t("stlReadmeContent"));
+      var baseFilename = t("stlBaseFilename"), reliefFilename = t("stlReliefFilename");
+      zip.file(baseFilename, baseStl);
+      zip.file(reliefFilename, reliefStl);
+      zip.file(t("stlReadmeName"), t("stlReadmeContent", { base: baseFilename, relief: reliefFilename }));
       return zip.generateAsync({ type: "blob" });
     });
   }

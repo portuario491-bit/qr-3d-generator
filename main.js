@@ -9,6 +9,7 @@
   // Spanish defaults, used verbatim if a page doesn't set __I18N__ (keeps this script safe
   // to load standalone / never breaks the existing Spanish page).
   var DEFAULT_I18N = {
+    lang: "es",
     emojiAriaLabel: "Usar {emoji} como centro",
     slugWifiFallback: "red",
     slugCodeFallback: "codigo-qr"
@@ -19,6 +20,9 @@
     if (s == null) return key;
     if (vars) Object.keys(vars).forEach(function (k) { s = s.split("{" + k + "}").join(vars[k]); });
     return s;
+  }
+  function brandLabel(entry) {
+    return (I18N.lang === "en" && entry.labelEn) || entry.label;
   }
 
   var $ = function (sel, scope) { return (scope || document).querySelector(sel); };
@@ -216,7 +220,7 @@
     if (!grid || grid.children.length) return;
     grid.innerHTML = Object.keys(STYLES).map(function (key) {
       return '<button type="button" class="style-btn' + (key === state.styleKey ? " is-active" : "") +
-        '" data-style="' + key + '">' + escHTML(STYLES[key].label) + "</button>";
+        '" data-style="' + key + '">' + escHTML(brandLabel(STYLES[key])) + "</button>";
     }).join("");
     grid.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-style]");
@@ -246,7 +250,7 @@
     if (!row || row.children.length) return;
     var presets = data.presetColors || [];
     row.innerHTML = presets.map(function (p, i) {
-      return '<button type="button" class="preset-swatch" data-idx="' + i + '" title="' + escHTML(p.label) +
+      return '<button type="button" class="preset-swatch" data-idx="' + i + '" title="' + escHTML(brandLabel(p)) +
         '" style="background:linear-gradient(135deg,' + p.base + " 50%," + p.code + ' 50%)"></button>';
     }).join("");
     row.addEventListener("click", function (e) {
