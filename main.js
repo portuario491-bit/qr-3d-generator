@@ -382,6 +382,8 @@
     var dialog = $("#adDialog");
     if (!dialog) return;
     document.addEventListener("qr:downloaded", function () {
+      if (sessionStorage.getItem("qr3d_dialog_shown")) return;
+      try { sessionStorage.setItem("qr3d_dialog_shown", "1"); } catch (e) {}
       setTimeout(function () { safe(function () { dialog.showModal(); }, "adDialog.showModal"); }, 350);
     });
     var close = function () { if (dialog.open) dialog.close(); };

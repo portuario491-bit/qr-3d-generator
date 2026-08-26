@@ -53,12 +53,16 @@
       <span class="brand-mark" aria-hidden="true">▦</span>
       <span class="brand-name">QR3D Studio</span>
     </a>
-    <nav class="header-nav" aria-label="Secciones de la página">
+    <nav class="header-nav" id="headerNav" aria-label="Secciones de la página">
       <a href="index.html#tool">Herramienta</a>
       <a href="index.html#como-funciona">Cómo funciona</a>
       <a href="index.html#ideas">Ideas de uso</a>
       <a href="index.html#faq">FAQ</a>
     </nav>
+    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="headerNav" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+
   </div>
 </header>
 
@@ -145,5 +149,6 @@
     </nav>
   </div>
 </footer>
+<script defer src="nav.js"></script>
 </body>
 </html>
