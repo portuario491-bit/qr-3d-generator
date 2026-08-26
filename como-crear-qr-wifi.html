@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo crear un QR de WiFi (y cómo funciona) | QR3D Studio</title>
+<meta name="description" content="Qué datos necesita un código QR de WiFi, qué formato usa por dentro (WIFI:T:...) y cómo generarlo, en pantalla o como pieza 3D imprimible.">
+<link rel="canonical" href="https://qr3d.utilix.uno/como-crear-qr-wifi.html">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="es" href="https://qr3d.utilix.uno/como-crear-qr-wifi.html">
+<link rel="alternate" hreflang="x-default" href="https://qr3d.utilix.uno/como-crear-qr-wifi.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo crear un QR de WiFi (y cómo funciona)">
+<meta property="og:description" content="Qué datos necesita, qué formato usa por dentro, y cómo generarlo.">
+<meta property="og:image" content="assets/img/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=20260826">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2829981614170975" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+  { "@type": "ListItem", "position": 1, "name": "QR3D Studio", "item": "https://qr3d.utilix.uno/" },
+  { "@type": "ListItem", "position": 2, "name": "Cómo crear un QR de WiFi" }
+] }
+</script>
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  { "@type": "Question", "name": "¿Cualquier lector de QR puede leer uno de WiFi?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, iOS (desde iOS 11) y Android (desde Android 10, y antes en muchos fabricantes) lo reconocen de forma nativa desde la propia cámara, sin necesitar una app aparte." } },
+  { "@type": "Question", "name": "¿Qué pasa si mi red usa WPA3?", "acceptedAnswer": { "@type": "Answer", "text": "El formato estándar del QR de WiFi no distingue WPA2 de WPA3 — ambos se codifican como \"WPA\" y el móvil negocia el protocolo real al conectarse, así que no hay que hacer nada especial." } }
+] }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">▦</span><span class="brand-name">QR3D Studio</span></a>
+    <nav class="header-nav" aria-label="Secciones de la página">
+      <a href="index.html#tool">Herramienta</a><a href="index.html#como-funciona">Cómo funciona</a><a href="index.html#ideas">Ideas de uso</a><a href="index.html#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="page-hero container">
+    <p class="breadcrumb"><a href="index.html">QR3D Studio</a> / Cómo crear un QR de WiFi</p>
+    <h1>Cómo crear un código QR de WiFi</h1>
+    <p class="hero-sub">Qué datos hacen falta, qué lleva el código por dentro, y cómo generarlo — en pantalla o como pieza física en 3D.</p>
+    <a class="btn btn-primary" href="index.html#tool">Crear el mío →</a>
+  </section>
+
+  <section class="seo-copy container">
+    <h2>Qué datos necesitas</h2>
+    <ul>
+      <li><strong>Nombre de la red (SSID)</strong> — tal cual aparece al buscar redes disponibles, distingue mayúsculas de minúsculas.</li>
+      <li><strong>Contraseña</strong> — si la red es abierta (sin contraseña), se puede omitir.</li>
+      <li><strong>Tipo de seguridad</strong> — WPA/WPA2 es lo más habitual hoy; WEP es un estándar antiguo cada vez menos usado.</li>
+      <li><strong>Si la red está oculta</strong> — un dato adicional que algunos routers permiten activar.</li>
+    </ul>
+
+    <h2>Qué lleva el código por dentro</h2>
+    <p>Un QR de WiFi no es más que texto codificado con un formato estándar que empieza por <code>WIFI:T:</code>, seguido del tipo de seguridad, el SSID y la contraseña, por ejemplo: <code>WIFI:T:WPA;S:MiRed;P:micontraseña;;</code>. Cualquier generador que siga este estándar produce un QR compatible con la lectura nativa de iOS y Android — no hace falta ninguna app especial para escanearlo.</p>
+
+    <h2>Cómo generarlo</h2>
+    <ol class="how-steps">
+      <li><span class="step-num">1</span><h3>Abre la pestaña «WiFi» del generador</h3><p>En vez de pegar un enlace, rellena el nombre de red, la contraseña y el tipo de seguridad.</p></li>
+      <li><span class="step-num">2</span><h3>Descárgalo en pantalla o en 3D</h3><p>Un PNG/SVG para imprimir en papel o compartir digitalmente, o un objeto 3D (placa de pared) para dejarlo fijo en la entrada.</p></li>
+      <li><span class="step-num">3</span><h3>Pruébalo antes de colocarlo</h3><p>Escanéalo con un par de móviles distintos para confirmar que conecta bien.</p></li>
+    </ol>
+
+    <p>Si lo que buscas es la versión imprimible en 3D con todos los detalles (formato, tamaño, colores), consulta <a href="generador-qr-wifi-imprimible-3d.html">generador de QR WiFi imprimible en 3D</a>.</p>
+    <p><a class="btn btn-primary" href="index.html#tool">Ir al generador →</a></p>
+  </section>
+
+  <div class="ad-slot ad-slot-incontent container" data-ad-slot><span class="ad-label">ANUNCIO</span><!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE --></div>
+
+  <section class="faq-section container">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-list">
+      <details class="faq-item"><summary>¿Cualquier lector de QR puede leer uno de WiFi?</summary><p>Sí, iOS (desde iOS 11) y Android (desde Android 10, y antes en muchos fabricantes) lo reconocen de forma nativa desde la propia cámara, sin necesitar una app aparte.</p></details>
+      <details class="faq-item"><summary>¿Qué pasa si mi red usa WPA3?</summary><p>El formato estándar del QR de WiFi no distingue WPA2 de WPA3 — ambos se codifican como "WPA" y el móvil negocia el protocolo real al conectarse, así que no hay que hacer nada especial.</p></details>
+    </div>
+  </section>
+
+  <section class="ideas-section container">
+    <h2>Sigue explorando</h2>
+    <div class="ideas-grid">
+      <a class="idea-card" href="generador-qr-wifi-imprimible-3d.html"><span class="idea-emoji" aria-hidden="true">📶</span><h3>QR WiFi imprimible en 3D</h3><p>La versión física, para pared.</p></a>
+      <a class="idea-card" href="como-imprimir-codigo-qr-en-3d.html"><span class="idea-emoji" aria-hidden="true">🖨️</span><h3>Cómo imprimir un QR en 3D</h3><p>La guía completa, paso a paso.</p></a>
+      <a class="idea-card" href="tamano-minimo-qr-3d-para-escanear.html"><span class="idea-emoji" aria-hidden="true">📏</span><h3>Tamaño mínimo recomendado</h3><p>Para que escanee sin fallos.</p></a>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-row">
+    <p>© 2026 QR3D Studio — Generador de códigos QR para imprimir en 3D.</p>
+    <nav aria-label="Legal"><a href="privacidad.html">Privacidad</a><a href="aviso-legal.html">Aviso legal</a></nav>
+  </div>
+</footer>
+</body>
+</html>

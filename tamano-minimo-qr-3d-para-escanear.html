@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tamaño mínimo de un QR 3D para que escanee bien | QR3D Studio</title>
+<meta name="description" content="Qué tamaño de módulo necesita un código QR impreso en 3D para escanear sin fallos, y cómo calcularlo según el tamaño de la pieza y la longitud del enlace.">
+<link rel="canonical" href="https://qr3d.utilix.uno/tamano-minimo-qr-3d-para-escanear.html">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="es" href="https://qr3d.utilix.uno/tamano-minimo-qr-3d-para-escanear.html">
+<link rel="alternate" hreflang="x-default" href="https://qr3d.utilix.uno/tamano-minimo-qr-3d-para-escanear.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tamaño mínimo de un QR 3D para que escanee bien">
+<meta property="og:description" content="Qué tamaño de módulo necesita un código QR impreso en 3D para escanear sin fallos.">
+<meta property="og:image" content="assets/img/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=20260826">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2829981614170975" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+  { "@type": "ListItem", "position": 1, "name": "QR3D Studio", "item": "https://qr3d.utilix.uno/" },
+  { "@type": "ListItem", "position": 2, "name": "Tamaño mínimo recomendado" }
+] }
+</script>
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+  { "@type": "Question", "name": "¿Por qué falla al escanear si el QR se ve bien a simple vista?", "acceptedAnswer": { "@type": "Answer", "text": "Un QR puede verse bien y aun así no escanear si el módulo (cada cuadradito) es más pequeño de lo que la cámara del móvil puede resolver a la distancia habitual de lectura (10-20 cm), o si el contraste entre los dos colores es bajo." } },
+  { "@type": "Question", "name": "¿Qué es más importante, el tamaño de la pieza o la longitud del enlace?", "acceptedAnswer": { "@type": "Answer", "text": "Los dos determinan el tamaño de módulo: un enlace más corto necesita menos módulos, así que cada uno sale más grande para el mismo tamaño de pieza. Acortar el enlace es la forma más eficaz de conseguir un módulo grande sin agrandar la pieza." } }
+] }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">▦</span><span class="brand-name">QR3D Studio</span></a>
+    <nav class="header-nav" aria-label="Secciones de la página">
+      <a href="index.html#tool">Herramienta</a><a href="index.html#como-funciona">Cómo funciona</a><a href="index.html#ideas">Ideas de uso</a><a href="index.html#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="page-hero container">
+    <p class="breadcrumb"><a href="index.html">QR3D Studio</a> / Tamaño mínimo recomendado</p>
+    <h1>Tamaño mínimo de un QR 3D para que escanee bien</h1>
+    <p class="hero-sub">La causa más habitual de que un QR impreso no escanee no es el color ni la impresora: es que los módulos son demasiado pequeños. Aquí está la cifra a recordar y cómo aplicarla.</p>
+    <a class="btn btn-primary" href="index.html#tool">Comprobar el mío en el generador →</a>
+  </section>
+
+  <section class="seo-copy container">
+    <h2>La cifra: 1,5 mm por módulo, mínimo</h2>
+    <p>Un código QR está formado por una cuadrícula de módulos (los cuadraditos blancos y negros). Cuanto más largo es el enlace que codificas, más módulos necesita la cuadrícula, y más pequeño sale cada módulo para un mismo tamaño de pieza. Por debajo de <strong>1,5&nbsp;mm por módulo</strong>, la mayoría de cámaras de móvil empiezan a tener problemas para distinguir un módulo de otro a la distancia de lectura habitual (10-20 cm), sobre todo con poca luz.</p>
+
+    <h2>Cómo se calcula</h2>
+    <p>El tamaño de módulo depende de dos cosas: el tamaño físico de la pieza y el número de módulos que necesita tu enlace (que depende de su longitud). Nuestro generador lo calcula por ti en tiempo real y te avisa en rojo si te quedas corto — no hace falta hacer la cuenta a mano.</p>
+    <ul>
+      <li><strong>Para agrandar el módulo sin tocar el enlace:</strong> aumenta el tamaño de la pieza con el control deslizante.</li>
+      <li><strong>Para agrandar el módulo sin tocar el tamaño de la pieza:</strong> acorta el enlace (un acortador de URLs reduce mucho el número de módulos necesarios).</li>
+    </ul>
+
+    <h2>Otros factores que también importan</h2>
+    <p>El tamaño de módulo no es lo único: el <strong>contraste</strong> entre el color de la base y el del código también influye mucho (recomendamos una relación de al menos 3:1, y evitar un código más claro que la base). La herramienta comprueba ambas cosas a la vez.</p>
+
+    <p><a class="btn btn-primary" href="index.html#tool">Ir al generador →</a></p>
+  </section>
+
+  <div class="ad-slot ad-slot-incontent container" data-ad-slot><span class="ad-label">ANUNCIO</span><!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE --></div>
+
+  <section class="faq-section container">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-list">
+      <details class="faq-item"><summary>¿Por qué falla al escanear si el QR se ve bien a simple vista?</summary><p>Un QR puede verse bien y aun así no escanear si el módulo (cada cuadradito) es más pequeño de lo que la cámara del móvil puede resolver a la distancia habitual de lectura (10-20 cm), o si el contraste entre los dos colores es bajo.</p></details>
+      <details class="faq-item"><summary>¿Qué es más importante, el tamaño de la pieza o la longitud del enlace?</summary><p>Los dos determinan el tamaño de módulo: un enlace más corto necesita menos módulos, así que cada uno sale más grande para el mismo tamaño de pieza. Acortar el enlace es la forma más eficaz de conseguir un módulo grande sin agrandar la pieza.</p></details>
+    </div>
+  </section>
+
+  <section class="ideas-section container">
+    <h2>Sigue explorando</h2>
+    <div class="ideas-grid">
+      <a class="idea-card" href="como-comprobar-que-un-qr-3d-escanea.html"><span class="idea-emoji" aria-hidden="true">📱</span><h3>Comprobar que escanea</h3><p>El paso final antes de dar la pieza por buena.</p></a>
+      <a class="idea-card" href="como-imprimir-codigo-qr-en-3d.html"><span class="idea-emoji" aria-hidden="true">🖨️</span><h3>Cómo imprimir un QR en 3D</h3><p>La guía completa, paso a paso.</p></a>
+      <a class="idea-card" href="mejores-ajustes-impresion-qr-3d.html"><span class="idea-emoji" aria-hidden="true">⚙️</span><h3>Mejores ajustes de impresión</h3><p>Altura de capa, colores y velocidad.</p></a>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-row">
+    <p>© 2026 QR3D Studio — Generador de códigos QR para imprimir en 3D.</p>
+    <nav aria-label="Legal"><a href="privacidad.html">Privacidad</a><a href="aviso-legal.html">Aviso legal</a></nav>
+  </div>
+</footer>
+</body>
+</html>
