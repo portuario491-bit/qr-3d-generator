@@ -4,6 +4,23 @@
   var data = window.__BRAND__ || {};
   var STYLES = data.styles || {};
 
+  // ---------------------------------------------------------------- i18n
+  // Each language's HTML page sets window.__I18N__ before this script loads. These are the
+  // Spanish defaults, used verbatim if a page doesn't set __I18N__ (keeps this script safe
+  // to load standalone / never breaks the existing Spanish page).
+  var DEFAULT_I18N = {
+    emojiAriaLabel: "Usar {emoji} como centro",
+    slugWifiFallback: "red",
+    slugCodeFallback: "codigo-qr"
+  };
+  var I18N = Object.assign({}, DEFAULT_I18N, window.__I18N__ || {});
+  function t(key, vars) {
+    var s = I18N[key];
+    if (s == null) return key;
+    if (vars) Object.keys(vars).forEach(function (k) { s = s.split("{" + k + "}").join(vars[k]); });
+    return s;
+  }
+
   var $ = function (sel, scope) { return (scope || document).querySelector(sel); };
   var $$ = function (sel, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(sel)); };
   var escHTML = function (s) {
@@ -118,13 +135,13 @@
 
   function slugFromPayload() {
     if (state.mode === "wifi") {
-      return "wifi-" + (state.wifi.ssid || "red").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 30) || "wifi";
+      return "wifi-" + (state.wifi.ssid || t("slugWifiFallback")).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 30) || "wifi";
     }
     try {
       var u = new URL(currentPayload);
       return u.hostname.replace(/^www\./, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
     } catch (e) {
-      return "codigo-qr";
+      return t("slugCodeFallback");
     }
   }
 
@@ -215,7 +232,7 @@
     if (!grid || grid.children.length) return;
     var picks = data.emojiPicks || [];
     grid.innerHTML = picks.map(function (e) {
-      return '<button type="button" class="emoji-btn" data-emoji="' + e + '" aria-label="Usar ' + e + ' como centro">' + e + "</button>";
+      return '<button type="button" class="emoji-btn" data-emoji="' + e + '" aria-label="' + escHTML(t("emojiAriaLabel", { emoji: e })) + '">' + e + "</button>";
     }).join("");
     grid.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-emoji]");

@@ -5,6 +5,37 @@
   function $$(sel, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(sel)); }
   function safe(fn, name) { try { return fn(); } catch (e) { console.warn("[" + name + "]", e); } }
 
+  // ---------------------------------------------------------------- i18n (see main.js for the pattern)
+  var DEFAULT_I18N = {
+    warnModuleBad: "Módulo de {mm} mm — agranda la pieza o acorta el enlace (mínimo recomendado: 1,5 mm).",
+    warnModuleOk: "Módulo de {mm} mm — buen tamaño para escanear.",
+    warnContrastBad: "Contraste bajo entre colores ({ratio}:1) — puede no escanear. Usa una base clara y un código oscuro.",
+    warnContrastOk: "Contraste de {ratio}:1 — buen contraste para escanear.",
+    warnInverted: "Código más claro que la base — la mayoría de móviles lo leen, algunos antiguos no.",
+    btn3mfIdle: "Descargar 3MF (2 colores)",
+    btnStlIdle: "Descargar STL (sin color)",
+    btnGenerating: "Generando…",
+    err3mf: "No se pudo generar el archivo 3D. Prueba de nuevo.",
+    errStl: "No se pudo generar el STL. Prueba de nuevo.",
+    xmlLang: "es-ES",
+    materialBase: "Base",
+    materialCode: "Codigo",
+    stlReadmeName: "LEEME.txt",
+    stlReadmeContent:
+      "Importa ambos archivos (base.stl y qr-relieve.stl) en tu slicer, colócalos en el mismo origen (0,0)\n" +
+      "y asigna un filamento/color distinto a cada uno.\n\n" +
+      "Si tu slicer admite color por pieza, te recomendamos usar el archivo .3mf en su lugar:\n" +
+      "ya trae los dos colores asignados automáticamente.",
+    filenameFormat: { soporte: "soporte", llavero: "llavero", placa: "placa" }
+  };
+  var I18N = Object.assign({}, DEFAULT_I18N, window.__I18N__ || {});
+  function t(key, vars) {
+    var s = I18N[key];
+    if (s == null) return key;
+    if (vars) Object.keys(vars).forEach(function (k) { s = s.split("{" + k + "}").join(vars[k]); });
+    return s;
+  }
+
   var obj3d = {
     format: "soporte",     // 'soporte' | 'llavero' | 'placa'
     text: "",
@@ -401,17 +432,17 @@
 
     var pills = [];
     if (moduleMM < 1.5) {
-      pills.push({ ok: false, text: "Módulo de " + moduleMM.toFixed(2) + " mm — agranda la pieza o acorta el enlace (mínimo recomendado: 1,5 mm)." });
+      pills.push({ ok: false, text: t("warnModuleBad", { mm: moduleMM.toFixed(2) }) });
     } else {
-      pills.push({ ok: true, text: "Módulo de " + moduleMM.toFixed(2) + " mm — buen tamaño para escanear." });
+      pills.push({ ok: true, text: t("warnModuleOk", { mm: moduleMM.toFixed(2) }) });
     }
     if (contrast < 3) {
-      pills.push({ ok: false, text: "Contraste bajo entre colores (" + contrast.toFixed(1) + ":1) — puede no escanear. Usa una base clara y un código oscuro." });
+      pills.push({ ok: false, text: t("warnContrastBad", { ratio: contrast.toFixed(1) }) });
     } else {
-      pills.push({ ok: true, text: "Contraste de " + contrast.toFixed(1) + ":1 — buen contraste para escanear." });
+      pills.push({ ok: true, text: t("warnContrastOk", { ratio: contrast.toFixed(1) }) });
     }
     if (inverted) {
-      pills.push({ ok: false, text: "Código más claro que la base — la mayoría de móviles lo leen, algunos antiguos no." });
+      pills.push({ ok: false, text: t("warnInverted") });
     }
     box.innerHTML = pills.map(function (p) {
       return '<div class="warn-pill ' + (p.ok ? "is-ok" : "is-bad") + '">' + (p.ok ? "✓" : "⚠") + " " + p.text + "</div>";
@@ -460,11 +491,11 @@
 
     var modelXml =
       '<?xml version="1.0" encoding="UTF-8"?>' +
-      '<model unit="millimeter" xml:lang="es-ES" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">' +
+      '<model unit="millimeter" xml:lang="' + t("xmlLang") + '" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">' +
       "<resources>" +
       '<basematerials id="1">' +
-      '<base name="Base" displaycolor="' + hex8(obj3d.colorBase) + '"/>' +
-      '<base name="Codigo" displaycolor="' + hex8(obj3d.colorCode) + '"/>' +
+      '<base name="' + t("materialBase") + '" displaycolor="' + hex8(obj3d.colorBase) + '"/>' +
+      '<base name="' + t("materialCode") + '" displaycolor="' + hex8(obj3d.colorCode) + '"/>' +
       "</basematerials>" +
       '<object id="2" type="model" pid="1" pindex="0">' + baseMesh.xml + "</object>" +
       '<object id="3" type="model" pid="1" pindex="1">' + reliefMesh.xml + "</object>" +
@@ -501,11 +532,7 @@
       var zip = new window.JSZip();
       zip.file("base.stl", baseStl);
       zip.file("qr-relieve.stl", reliefStl);
-      zip.file("LEEME.txt",
-        "Importa ambos archivos (base.stl y qr-relieve.stl) en tu slicer, colócalos en el mismo origen (0,0)\n" +
-        "y asigna un filamento/color distinto a cada uno.\n\n" +
-        "Si tu slicer admite color por pieza, te recomendamos usar el archivo .3mf en su lugar:\n" +
-        "ya trae los dos colores asignados automáticamente.");
+      zip.file(t("stlReadmeName"), t("stlReadmeContent"));
       return zip.generateAsync({ type: "blob" });
     });
   }
@@ -689,34 +716,38 @@
     document.dispatchEvent(new CustomEvent("qr:downloaded", { detail: { filename: filename } }));
   }
 
+  function formatSlug() {
+    return (I18N.filenameFormat && I18N.filenameFormat[obj3d.format]) || obj3d.format;
+  }
+
   function download3mf() {
     var btn = $("#download3mf");
-    if (btn) { btn.disabled = true; btn.textContent = "Generando…"; }
+    if (btn) { btn.disabled = true; btn.textContent = t("btnGenerating"); }
     freshModelForExport().then(function (model) {
       return build3mfBlob(model);
     }).then(function (res) {
-      saveBlob(res.blob, "qr3d-" + obj3d.format + ".3mf");
+      saveBlob(res.blob, "qr3d-" + formatSlug() + ".3mf");
       window.__QR3D_LAST_3MF__ = res;
     }).catch(function (e) {
       console.warn("[download3mf]", e);
-      alert("No se pudo generar el archivo 3D. Prueba de nuevo.");
+      alert(t("err3mf"));
     }).finally(function () {
-      if (btn) { btn.disabled = false; btn.textContent = "Descargar 3MF (2 colores)"; }
+      if (btn) { btn.disabled = false; btn.textContent = t("btn3mfIdle"); }
     });
   }
 
   function downloadStl() {
     var btn = $("#downloadStl");
-    if (btn) { btn.disabled = true; btn.textContent = "Generando…"; }
+    if (btn) { btn.disabled = true; btn.textContent = t("btnGenerating"); }
     freshModelForExport().then(function (model) {
       return buildStlZipBlob(model);
     }).then(function (blob) {
-      saveBlob(blob, "qr3d-" + obj3d.format + "-stl.zip");
+      saveBlob(blob, "qr3d-" + formatSlug() + "-stl.zip");
     }).catch(function (e) {
       console.warn("[downloadStl]", e);
-      alert("No se pudo generar el STL. Prueba de nuevo.");
+      alert(t("errStl"));
     }).finally(function () {
-      if (btn) { btn.disabled = false; btn.textContent = "Descargar STL (sin color)"; }
+      if (btn) { btn.disabled = false; btn.textContent = t("btnStlIdle"); }
     });
   }
 
