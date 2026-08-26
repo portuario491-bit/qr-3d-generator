@@ -118,11 +118,20 @@
     return previewInst;
   }
 
+  function pulseLiveHint(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("is-pulse");
+    void el.offsetWidth; // restart the CSS animation
+    el.classList.add("is-pulse");
+  }
+
   function render() {
     currentPayload = buildPayload();
     var inst = ensurePreviewInst();
     if (inst) inst.update(buildOptions(300, "svg"));
     updateWarningsAndNotify();
+    safe(function () { pulseLiveHint("qrLiveHint"); }, "pulseLiveHint");
   }
 
   function scheduleRender() {
@@ -406,7 +415,20 @@
     $: $, $$: $, safe: safe
   };
 
+  function initNavToggle() {
+    var btn = $("#navToggle"), nav = $("#headerNav");
+    if (!btn || !nav) return;
+    btn.addEventListener("click", function () {
+      var open = nav.classList.toggle("is-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") { nav.classList.remove("is-open"); btn.setAttribute("aria-expanded", "false"); }
+    });
+  }
+
   function boot() {
+    safe(initNavToggle, "initNavToggle");
     safe(mountStyleGrid, "mountStyleGrid");
     safe(mountEmojiGrid, "mountEmojiGrid");
     safe(mountPresetColors, "mountPresetColors");

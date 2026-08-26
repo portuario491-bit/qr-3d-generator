@@ -73,12 +73,15 @@
       <span class="brand-mark" aria-hidden="true">▦</span>
       <span class="brand-name">QR3D Studio</span>
     </a>
-    <nav class="header-nav" aria-label="Page sections">
+    <nav class="header-nav" id="headerNav" aria-label="Page sections">
       <a href="#tool">Tool</a>
       <a href="#how-it-works">How it works</a>
       <a href="#ideas">Use ideas</a>
       <a href="#faq">FAQ</a>
     </nav>
+    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="headerNav" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </header>
 
@@ -169,6 +172,7 @@
           <div class="qr-preview-frame">
             <div id="qrPreview" aria-live="polite"></div>
           </div>
+          <p class="field-hint live-hint" id="qrLiveHint">✓ Updates automatically as you type or change the design</p>
           <div class="download-row">
             <button type="button" class="btn btn-primary" id="downloadPng">Download PNG</button>
             <button type="button" class="btn btn-secondary" id="downloadSvg">Download SVG</button>
@@ -243,6 +247,7 @@
             <canvas id="viewer3dCanvas"></canvas>
           </div>
           <p class="viewer-hint">Drag to rotate the piece · this is how it'll look printed</p>
+          <p class="field-hint live-hint" id="viewer3dLiveHint">✓ The 3D view updates automatically</p>
           <div class="download-row">
             <button type="button" class="btn btn-primary" id="download3mf">Download 3MF (2 colors)</button>
             <button type="button" class="btn btn-secondary" id="downloadStl">Download STL (color-free)</button>

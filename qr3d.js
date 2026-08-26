@@ -4,6 +4,13 @@
   function $(sel, scope) { return (scope || document).querySelector(sel); }
   function $$(sel, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(sel)); }
   function safe(fn, name) { try { return fn(); } catch (e) { console.warn("[" + name + "]", e); } }
+  function pulseLiveHint(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("is-pulse");
+    void el.offsetWidth;
+    el.classList.add("is-pulse");
+  }
 
   // ---------------------------------------------------------------- i18n (see main.js for the pattern)
   var DEFAULT_I18N = {
@@ -681,6 +688,7 @@
       }).catch(function () { /* WebGL unavailable — downloads still work */ });
     }).then(function () {
       updateWarnings(lastModel ? lastModel.moduleMM : 0);
+      pulseLiveHint("viewer3dLiveHint");
     }).catch(function (e) { console.warn("[qr3d rebuild]", e); });
   }
 
