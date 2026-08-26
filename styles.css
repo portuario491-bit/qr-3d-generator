@@ -315,6 +315,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .idea-card h3 { font-size: 1rem; margin-bottom: .35rem; }
 .idea-card p { color: var(--text-muted); font-size: .9rem; }
 
+.gallery-section .section-sub { max-width: 60ch; margin: -.8rem auto 1.6rem; text-align: center; color: var(--text-muted); font-size: .92rem; }
+.gallery-item { padding: .7rem; }
+.gallery-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-s); background: var(--surface-soft); margin-bottom: .7rem; }
+.gallery-item figcaption h3 { font-size: .95rem; margin-bottom: .25rem; }
+.gallery-item figcaption p { color: var(--text-muted); font-size: .85rem; }
+
 .faq-list { display: flex; flex-direction: column; gap: .6rem; max-width: 74ch; margin-inline: auto; }
 .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-s); padding: .9rem 1.1rem; }
 .faq-item summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
