@@ -232,17 +232,62 @@
     return geo;
   };
 
+  // ---------------------------------------------------------------- hanging/mounting holes (box-soup, no CSG)
+  //
+  // A hole is built by NOT filling a small circular region while grid-merging a thin band of the
+  // plate (reusing gridRects, same technique as the QR relief itself) — additive-only, no boolean
+  // subtraction needed. The band sits in dedicated extra plate height (HOLE_BAND_MM) so it never
+  // overlaps the QR/label area, same principle as how labelH already reserves space for text.
+  var HOLE_BAND_MM = 12;
+
+  function addPlateWithHoles(builder, size, totalH, thickness, holes, bandBottomY) {
+    var bandTopY = totalH / 2;
+    // solid body below the perforated band
+    builder.addBox(-size / 2, -totalH / 2, 0, size / 2, bandBottomY, thickness);
+    var bandH = bandTopY - bandBottomY;
+    var cellMM = 0.5;
+    var cols = Math.max(4, Math.round(size / cellMM));
+    var rows = Math.max(4, Math.round(bandH / cellMM));
+    var x0 = -size / 2, y0 = bandBottomY;
+    var colW = size / cols, rowH = bandH / rows;
+    function on(r, c) {
+      var cx = x0 + (c + 0.5) * colW;
+      var cy = y0 + (r + 0.5) * rowH;
+      for (var i = 0; i < holes.length; i++) {
+        var h = holes[i];
+        var dx = cx - h.cx, dy = cy - h.cy;
+        if (dx * dx + dy * dy <= h.r * h.r) return false;
+      }
+      return true;
+    }
+    var rects = gridRects(on, cols, rows);
+    rects.forEach(function (rect) {
+      var rx0 = x0 + rect.c * colW, rx1 = x0 + (rect.c + rect.w) * colW;
+      var ry0 = y0 + rect.r * rowH, ry1 = y0 + (rect.r + rect.h) * rowH;
+      builder.addBox(rx0, ry0, 0, rx1, ry1, thickness);
+    });
+  }
+
   // ---------------------------------------------------------------- build the full model (base + relief) in mm
 
   function buildModel(matrix, mask, textGrid) {
     var n = matrix.n;
     var size = obj3d.sizeMM;
     var quiet = size * 0.06;                       // quiet margin around the code
-    var codeArea = size - quiet * 2;
-    var cell = codeArea / n;
     var def = FORMAT_DEF[obj3d.format];
     var labelH = obj3d.text ? def.labelHeight : 0;
-    var totalH = size + (labelH ? labelH + quiet * 0.4 : 0);
+    var labelBand = labelH ? labelH + quiet * 0.4 : 0;
+    var hasHoles = !!(def.ringHole || def.wallHoles);
+    var holeBand = hasHoles ? HOLE_BAND_MM : 0;
+    var depth = size * 0.62; // usable Y depth of the soporte's sloped face (< size: not a square face)
+
+    // The printable code area can't exceed the shortest usable dimension of the face it sits on.
+    // For "soporte" that's the wedge depth, not the full plate width — using the wider "size" here
+    // (as the code previously did) made the QR spill off the front/back of the sloped face.
+    var codeFootprint = obj3d.format === "soporte" ? Math.min(size, depth) : size;
+    var codeArea = codeFootprint - quiet * 2;
+    var cell = codeArea / n;
+    var totalH = size + labelBand + holeBand;
     var thickness = def.thickness || 4;
 
     var base = new GeoBuilder();
@@ -253,17 +298,18 @@
       // inclined wedge: back edge thick, front edge thin, ~38deg face, small front lip
       var backT = thickness + 14;
       var frontT = thickness;
-      var depth = size * 0.62;
       base.addWedgeSlab(-size/2, 0, size/2, depth, 0, backT, frontT);
       // small front lip (flat stand) so it doesn't end in a knife edge
       base.addBox(-size/2, depth, 0, size/2, depth + size*0.10, frontT);
+    } else if (hasHoles) {
+      var holeCy = totalH / 2 - holeBand / 2; // centered in the dedicated top band
+      var bandBottomY = totalH / 2 - holeBand;
+      var holes = def.ringHole
+        ? [{ cx: 0, cy: holeCy, r: 3.0 }]                                              // llavero: 1 centered hole, Ø6mm
+        : [{ cx: -size/2 + 6, cy: holeCy, r: 1.6 }, { cx: size/2 - 6, cy: holeCy, r: 1.6 }]; // placa: 2 corner holes, Ø3.2mm
+      addPlateWithHoles(base, size, totalH, thickness, holes, bandBottomY);
     } else {
       base.addBox(-size/2, -totalH/2, 0, size/2, totalH/2, thickness);
-      if (def.ringHole) {
-        // ring hole near top: subtract via a doughnut approximated as a box frame is complex —
-        // instead leave a printable tab with a through-hole approximated as two overlapping boxes removed
-        // (kept simple + robust: a slot, not a subtraction, avoids CSG entirely)
-      }
     }
 
     // ---- relief: QR modules, styled mask driven, merged into rectangles ----
@@ -271,9 +317,12 @@
     var rects = gridRects(function (r, c) { return mask ? mask.on(r, c) : matrix.isDark(r, c); }, n, n);
 
     var codeOriginX = -codeArea / 2;
+    // Both branches place the code flush against the bottom of its own region (above the label,
+    // if any) with a `quiet` margin — the "soporte" region is [0, depth], the flat-plate region
+    // is [-totalH/2 + labelBand, -totalH/2 + labelBand + size].
     var codeOriginY = obj3d.format === "soporte"
-      ? (size * 0.62 - codeArea) / 2 + quiet * 0.3
-      : (totalH - (labelH ? labelH + quiet * 0.4 : 0)) / 2 - size / 2 + quiet;
+      ? (depth - codeArea) / 2
+      : -totalH / 2 + labelBand + quiet;
 
     rects.forEach(function (rect) {
       var x0 = codeOriginX + rect.c * cell - 0.01;
@@ -284,7 +333,6 @@
         // project onto the inclined face: approximate with a flat-topped box at avg height (visually fine at this scale)
         var depth = size * 0.62;
         var backT = thickness + 14, frontT = thickness;
-        var yc0 = 0.62 * size - (depth - yBot); // unused fallback
         addReliefOnWedge(relief, x0, x1, yBot, yTop, depth, backT, frontT);
       } else {
         relief.addBox(x0, yBot, reliefZ0, x1, yTop, thickness + RELIEF_H);
@@ -325,7 +373,10 @@
 
     var baseGeo = base.toBufferGeometry();
     var reliefGeo = relief.toBufferGeometry();
-    return { baseGeo: baseGeo, reliefGeo: reliefGeo, totalH: totalH, thickness: thickness, size: size };
+    return {
+      baseGeo: baseGeo, reliefGeo: reliefGeo, totalH: totalH, thickness: thickness, size: size,
+      moduleMM: n ? codeArea / n : 0
+    };
   }
 
   // ---------------------------------------------------------------- warnings
@@ -341,13 +392,10 @@
     return la > lb ? la / lb : lb / la;
   }
 
-  function updateWarnings(n) {
+  function updateWarnings(moduleMM) {
     var box = $("#printWarnings");
     if (!box) return;
-    var size = obj3d.sizeMM;
-    var quiet = size * 0.06;
-    var codeArea = size - quiet * 2;
-    var moduleMM = n ? codeArea / n : 0;
+    moduleMM = moduleMM || 0;
     var contrast = contrastRatio(obj3d.colorBase, obj3d.colorCode);
     var inverted = luminance(obj3d.colorCode) > luminance(obj3d.colorBase);
 
@@ -602,7 +650,7 @@
         if (v.lastFormat !== obj3d.format) { fitCameraToFormat(); v.lastFormat = obj3d.format; }
       }).catch(function () { /* WebGL unavailable — downloads still work */ });
     }).then(function () {
-      updateWarnings(matrix.n);
+      updateWarnings(lastModel ? lastModel.moduleMM : 0);
     }).catch(function (e) { console.warn("[qr3d rebuild]", e); });
   }
 
@@ -710,7 +758,7 @@
   function initObject3dFields() {
     var text = $("#obj3dText"), base = $("#obj3dColorBase"), code = $("#obj3dColorCode"), size = $("#obj3dSize"), sizeVal = $("#obj3dSizeValue");
     if (text) text.addEventListener("input", function () { obj3d.text = text.value.trim(); scheduleRebuild(); });
-    if (base) base.addEventListener("input", function () { obj3d.colorBase = base.value; if (viewer) viewer.baseMat.color.set(base.value); updateWarnings(lastModel ? null : null); scheduleRebuild(); });
+    if (base) base.addEventListener("input", function () { obj3d.colorBase = base.value; if (viewer) viewer.baseMat.color.set(base.value); scheduleRebuild(); });
     if (code) code.addEventListener("input", function () { obj3d.colorCode = code.value; if (viewer) viewer.reliefMat.color.set(code.value); scheduleRebuild(); });
     if (size) size.addEventListener("input", function () {
       obj3d.sizeMM = +size.value;
