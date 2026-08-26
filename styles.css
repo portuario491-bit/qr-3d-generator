@@ -188,6 +188,7 @@ h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.12;
 .qr-preview-frame canvas, .qr-preview-frame svg { max-width: 100%; max-height: 100%; }
 
 .download-row { display: flex; flex-wrap: wrap; gap: .7rem; }
+.share-row { display: block; margin-top: .6rem; }
 .btn {
   padding: .78rem 1.3rem; border-radius: 999px; font-weight: 700; font-size: .92rem;
   transition: transform .15s var(--ease-out), background .15s var(--ease-out), opacity .15s;

@@ -12,7 +12,9 @@
     lang: "es",
     emojiAriaLabel: "Usar {emoji} como centro",
     slugWifiFallback: "red",
-    slugCodeFallback: "codigo-qr"
+    slugCodeFallback: "codigo-qr",
+    shareCopied: "✓ Enlace copiado",
+    shareBtnDefault: "🔗 Copiar enlace para compartir este QR"
   };
   var I18N = Object.assign({}, DEFAULT_I18N, window.__I18N__ || {});
   function t(key, vars) {
@@ -313,6 +315,58 @@
     if (svgBtn) svgBtn.addEventListener("click", downloadSvg);
   }
 
+  // ---------------------------------------------------------------- sharing
+  // Only the "link" mode is shareable via URL — a WiFi password is deliberately
+  // never put in a URL (browser history, address bar) even though the whole
+  // tool already runs locally; sharing the plain tool link is always safe.
+
+  function applySharedLinkFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var data = params.get("data");
+      if (!data) return;
+      var decoded = decodeURIComponent(data);
+      var input = $("#linkInput");
+      if (input) input.value = decoded;
+      state.link = decoded;
+      scheduleRender();
+    } catch (e) {}
+  }
+
+  function buildShareUrl() {
+    var url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    if (state.mode === "link" && state.link) {
+      url.searchParams.set("data", state.link);
+    }
+    return url.toString();
+  }
+
+  function initShareButton() {
+    var btn = $("#shareLink");
+    if (!btn) return;
+    var defaultLabel = btn.textContent;
+    btn.addEventListener("click", function () {
+      var url = buildShareUrl();
+      var done = function () {
+        btn.textContent = t("shareCopied");
+        setTimeout(function () { btn.textContent = defaultLabel; }, 1800);
+      };
+      if (navigator.share) {
+        safe(function () { navigator.share({ url: url }).catch(function () {}); }, "navigator.share");
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(function () {
+          window.prompt(defaultLabel, url);
+        });
+      } else {
+        window.prompt(defaultLabel, url);
+      }
+    });
+  }
+
   // ---------------------------------------------------------------- ad UX
 
   function initDownloadDialog() {
@@ -358,12 +412,15 @@
     safe(mountPresetColors, "mountPresetColors");
     safe(initContentTabs, "initContentTabs");
     safe(initFields, "initFields");
+    safe(initShareButton, "initShareButton");
     safe(initDownloadDialog, "initDownloadDialog");
     safe(initCornerToast, "initCornerToast");
 
     var tryRender = function () {
-      if (window.QRCodeStyling) { render(); }
-      else { setTimeout(tryRender, 60); }
+      if (window.QRCodeStyling) {
+        safe(applySharedLinkFromUrl, "applySharedLinkFromUrl");
+        render();
+      } else { setTimeout(tryRender, 60); }
     };
     tryRender();
 
